@@ -3,8 +3,13 @@ import streamlit as st
 import google.generativeai as genai
 
 from youtube_transcript_api import YouTubeTranscriptApi
+from dotenv import load_dotenv
+import os
 
-genai.configure(api_key="AIzaSyBpuh8xg2jxx1MNz6_kXXTvJ8Gu8k-va9Y")
+api_key = os.getenv("API_KEY")
+
+genai.configure(api_key=api_key)
+
 
 prompt="""You are Youtube video summarizer. You will be taking the transcript text
 and summarizing the entire video and providing the important summary in points

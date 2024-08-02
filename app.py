@@ -6,7 +6,12 @@ import google.generativeai as genai
 
 from flask import Flask,jsonify
 
-genai.configure(api_key="AIzaSyBpuh8xg2jxx1MNz6_kXXTvJ8Gu8k-va9Y")
+from dotenv import load_dotenv
+import os
+
+api_key = os.getenv("API_KEY")
+
+genai.configure(api_key=api_key)
 
 prompt="""You are Youtube video summarizer. You will be taking the transcript text
 and summarizing the entire video and providing the important summary in points
