@@ -25,6 +25,8 @@ def extract_transcript_details(youtube_video_url):
             transcript += " " + i["text"]
 
         return transcript
+    except IndexError:
+        return "Invalid YouTube URL. Please ensure the URL is in the correct format."
     except TranscriptsDisabled:
         return "Transcripts are disabled for this video."
     except NoTranscriptFound:
@@ -45,12 +47,15 @@ st.title("YouTube Transcript to Detailed Notes Converter")
 youtube_link = st.text_input("Enter YouTube Video Link:")
 
 if youtube_link:
-    video_id = youtube_link.split("=")[1]
-    st.image(f"http://img.youtube.com/vi/{video_id}/0.jpg", use_column_width=True)
+    try:
+        video_id = youtube_link.split("=")[1]
+        st.image(f"http://img.youtube.com/vi/{video_id}/0.jpg", use_column_width=True)
+    except IndexError:
+        st.error("Invalid YouTube URL. Please ensure the URL is in the correct format.")
 
 if st.button("Get Detailed Notes"):
     transcript_text = extract_transcript_details(youtube_link)
-    if "An error occurred" in transcript_text or "Transcripts are disabled" in transcript_text or "No transcript found" in transcript_text:
+    if "An error occurred" in transcript_text or "Transcripts(Subtitles) are disabled" in transcript_text or "No transcript(subtitles) found" in transcript_text or "Invalid YouTube URL" in transcript_text:
         st.error(transcript_text)
     else:
         summary = generate_gemini_content(transcript_text, prompt)
